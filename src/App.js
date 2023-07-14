@@ -3,6 +3,7 @@ import Navigation from './components/Navigation';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import PageRenderer from './page-render';
+import PageNotFound from './components/PageNotFound';
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/:page" element={PageRenderer} />
           <Route path="/" render={() => <Navigate to="/home" />} />
-          <Route element={() => 404} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
 
       </div>
