@@ -11,7 +11,7 @@ function App() {
       <div className="App">
         <Navigation />
         <Routes>
-          <Route path="/:page" element={PageRenderer} />
+          <Route path="/:page" element={<PageRenderer />} />
           <Route path="/" render={() => <Navigate to="/home" />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>

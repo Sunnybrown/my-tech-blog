@@ -1,23 +1,35 @@
 import React from 'react';
-import { useMatch } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-const generatePage = page => {
-    const component = () => require(`./pages/${page}.js`).default
+const generatePage = async page => {
+    let component;
 
     try {
-        return React.createElement(component());
+        component = await import(`./pages/${page}.js`);
     } catch (err) {
-        console.warn(err)
-        return React.createElement(() => 404)
+        console.warn(err);
+        return () => 404;
     }
-}
+
+    return component.default || component;
+};
 
 const PageRenderer = () => {
-    const {
-        params: { page }
-    } = useMatch()
 
-    return generatePage(page)
-}
+
+    const { page } = useParams();
+
+    const [Component, setComponent] = useState(null);
+
+
+    useEffect(() => {
+        generatePage(page).then((comp) => {
+            setComponent(() => comp);
+        });
+    }, [page]);
+
+    return Component ? <Component /> : null;
+};
 
 export default PageRenderer;
